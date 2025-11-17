@@ -10,9 +10,29 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+
+//######################################
+//Allowing acces from a browser to the API
+
+//First part for CORSE
+//######################################
+builder.Services.AddCors();
+//#####################################
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+//#######################################
+//Add header for CORSE as second part
+app.UseCors(x =>
+ x.AllowAnyHeader().
+ AllowAnyMethod().
+ WithOrigins("http://localhost:4200", "https://localhost:4200")
+ );
+//#######################################
+
+
 app.MapControllers();
 
 app.Run();
