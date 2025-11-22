@@ -1,6 +1,7 @@
 using System.Text;
 using API.Data;
 using API.Interfaces;
+using API.MiddleWare;
 using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -58,6 +59,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+//####################################
+//Add custom middleware for exception handling
+// Exception middleware is at the top
+//Exception middleware
+app.UseMiddleware<ExceptionMiddleWare>();
+
 //#######################################
 //Add header for CORSE as second part
 app.UseCors(x =>

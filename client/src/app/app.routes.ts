@@ -5,6 +5,9 @@ import { MemberDetailed } from '../features/members/member-detailed/member-detai
 import { List } from '../features/list/list';
 import { Messages } from '../features/messages/messages';
 import { authGuard } from '../core/guards/auth-guard';
+import { TestErrors } from '../features/test-errors/test-errors';
+import { NotFound } from '../shared/errors/not-found/not-found';
+import { ServerError } from '../shared/errors/server-error/server-error';
 
 export const routes: Routes = [
     //In Angular application Routes are defined here
@@ -28,6 +31,14 @@ export const routes: Routes = [
             {path: 'messages', component: Messages},
         ]
     },
+    {
+        path:'errors',
+        component: TestErrors
+    },
+    {
+        path: 'server-error',
+        component: ServerError
+    },
     //6 --> A path for Wildcard route (Ex.: For a non found page)
-    {path: '**', component: Home},
+    {path: '**', component: NotFound},
 ];
