@@ -33,6 +33,8 @@ builder.Services.AddCors();
 3 --> Scoped
 */
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IMemberRepository, MemberRepository>();
+
 //####################################
 
 //#############################################
@@ -82,5 +84,24 @@ app.UseAuthorization(); //Are you allowed?
 
 
 app.MapControllers();
+
+//############################################################
+//Feeding database with data
+using var scope = app.Services.CreateScope();
+var service = scope.ServiceProvider;
+
+try
+{
+    var context = service.GetRequiredService<AppDbContext>();
+
+    await context.Database.MigrateAsync();
+    await Seed.SeedUsers(context);
+}
+catch (Exception ex)
+{
+    var logger = service.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "Error occured during migration");
+}
+//############################################################
 
 app.Run();
